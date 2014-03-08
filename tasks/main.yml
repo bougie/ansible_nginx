@@ -1,0 +1,24 @@
+- name: create webserver group
+  group: name={{ansible_hostname}} state=present
+
+- name: create webserver user
+  user: name={{ansible_hostname}} createhome=yes home=/srv/www state=present update_password=on_create shell=/bin/bash group={{ansible_hostname}} password=$6$rounds=100000$V5OYPmf/9vJWFWM3$o71/eKMosvVdqgfu2CrWHhfiefKwwnBx2LOPouWfCXCGeWA18yjb32zRBLmX18GFVIaOZtRFhf6okmFIqXm6O/
+
+- name: install nginx
+  apt: pkg=nginx state=present install_recommends=no
+
+- name: ensure nginx is running
+  service: name=nginx state=started
+
+- name: copy nginx config file
+  template: src=nginx.conf.j2 dest=/etc/nginx/nginx.conf
+  notify:
+  - reload nginx
+
+- name: copy default vhost
+  template: src=sites-enabled/default.j2 dest=/etc/nginx/sites-enabled/default
+  notify:
+  - reload nginx
+
+- name: create default vhost directory
+  file: path=/srv/www/default owner={{ansible_hostname}} group={{ansible_hostname}} mode=0750 state=directory
