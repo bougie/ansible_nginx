@@ -22,12 +22,14 @@ Defaults values set :
 ## Multi users configuration
 
 A host_vars file have to be like this :
-    multiusers: True
-    users:
-      - name: <username>
-        vhosts:
-          - <vhostname1>
-          - <vhostname2>
+```
+multiusers: True
+users:
+  - name: <username>
+    vhosts:
+      - <vhostname1>
+      - <vhostname2>
+```
 
 Ansible will create an user for each users. The home directory will be /srv/www/<username>.
 VHosts of this user will be stored in /srv/www/<username>/<vhostname>
