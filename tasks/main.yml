@@ -1,9 +1,3 @@
-- name: create webserver group
-  group: name={{ansible_hostname}} state=present
-
-- name: create webserver user
-  user: name={{ansible_hostname}} createhome=yes home=/srv/www state=present update_password=on_create shell=/bin/bash group={{ansible_hostname}} password=$6$rounds=100000$V5OYPmf/9vJWFWM3$o71/eKMosvVdqgfu2CrWHhfiefKwwnBx2LOPouWfCXCGeWA18yjb32zRBLmX18GFVIaOZtRFhf6okmFIqXm6O/
-
 - name: install nginx
   apt: pkg=nginx state=present install_recommends=no
 
@@ -15,10 +9,8 @@
   notify:
   - reload nginx
 
-- name: copy default vhost
-  template: src=sites-enabled/default.j2 dest=/etc/nginx/sites-enabled/default
-  notify:
-  - reload nginx
+- include: single_users.yml
+  when: multiusers == False
 
-- name: create default vhost directory
-  file: path=/srv/www/default owner={{ansible_hostname}} group={{ansible_hostname}} mode=0750 state=directory
+- include: multi_users.yml
+  when: multiusers == True

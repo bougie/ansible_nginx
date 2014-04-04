@@ -1,0 +1,21 @@
+- name: create groups
+  group: name={{item.name}} state=present
+  with_items: users
+
+- name: create users
+  user: name={{item.name}} createhome=yes home=/srv/www/{{item.name}} state=present update_password=on_create shell=/bin/bash group={{item.name}} password=$6$rounds=100000$V5OYPmf/9vJWFWM3$o71/eKMosvVdqgfu2CrWHhfiefKwwnBx2LOPouWfCXCGeWA18yjb32zRBLmX18GFVIaOZtRFhf6okmFIqXm6O/
+  with_items: users
+
+- name: copy vhosts config file
+  template: src=sites-enabled/vhost.j2 dest=/etc/nginx/sites-enabled/{{item.1}}
+  with_subelements:
+    - users
+    - vhosts
+  notify:
+  - reload nginx
+
+- name: create vhosts directories
+  file: path=/srv/www/{{item.0.name}}/{{item.1}} owner={{item.0.name}} group={{item.0.name}} mode=0755 state=directory
+  with_subelements:
+    - users
+    - vhosts

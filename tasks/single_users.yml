@@ -1,0 +1,10 @@
+- name: create webserver group
+  group: name={{ansible_hostname}} state=present
+
+- name: copy default vhost
+  template: src=sites-enabled/default.j2 dest=/etc/nginx/sites-enabled/default
+  notify:
+  - reload nginx
+
+- name: create webserver user
+  user: name={{ansible_hostname}} createhome=yes home=/srv/www/default state=present update_password=on_create shell=/bin/bash group={{ansible_hostname}} password=$6$rounds=100000$V5OYPmf/9vJWFWM3$o71/eKMosvVdqgfu2CrWHhfiefKwwnBx2LOPouWfCXCGeWA18yjb32zRBLmX18GFVIaOZtRFhf6okmFIqXm6O/
