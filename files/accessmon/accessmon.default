@@ -1,0 +1,8 @@
+# User the process will run under
+DAEMONUSER=www-data
+
+# Group the process will run under
+DAEMONGROUP=adm
+
+# Pid file location
+# PIDFILE=/opt/accessmon/run/accessmon.pid

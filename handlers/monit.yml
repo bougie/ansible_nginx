@@ -1,0 +1,2 @@
+- name: reload accessmon
+  service: name=accessmon state=reloaded

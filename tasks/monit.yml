@@ -1,0 +1,22 @@
+- name: create accessmon directories
+  file: path=/opt/accessmon/{{item}} owner=www-data group=adm mode=0755 state=directory 
+  with_items:
+    - etc
+    - run
+    - bin
+
+- name: copy accessmon binary
+  copy: src=accessmon/accessmon.py dest=/opt/accessmon/bin mode=0755
+  notify:
+  - reload accessmon
+
+- name: copy accessmon init script
+  copy: src=accessmon/accessmon.init dest=/etc/init.d/accessmon mode=0755
+
+- name: copy accessmon init script default
+  copy: src=accessmon/accessmon.default dest=/etc/default/accessmon mode=755
+
+- name: copy acessmon config file
+  template: src=accessmon/accessmon.ini.j2 dest=/opt/accessmon/etc/accessmon.ini mode=0644
+  notify:
+  - reload accessmon
