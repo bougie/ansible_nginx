@@ -4,7 +4,7 @@ server {
 
     root /srv/www/{{item.0.name}}/{{item.1}};
 
-    server_name {{item.1}}
+    server_name {{item.1}};
 
 #    access_log /var/log/nginx/{{item.1}}.access.log;
 #    error_log /var/log/nginx/{{item.1}}.error.log;
