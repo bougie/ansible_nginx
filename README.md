@@ -1,12 +1,12 @@
 ansible_nginx
 =============
 
-Ansible playbook for configuration of the nginx web server.
+Ansible playbook for configuring the nginx web server.
 It handles two cases of configurations:
   * a single user mode
   * a multi user mode
 
-The webserver runs under user www-data user. All data are stored in subdirectories of /srv/www.
+The webserver runs under user **www-data**. All data are stored in subdirectories of /srv/www.
 
 
 ## Single user configuration
@@ -15,13 +15,13 @@ This is the default mode.
 
 Defaults values set :
   * user : the server hostname
-  * user home dir (default vhost data dir) : /srv/www/default
-  * vhost configuration file : /etc/nginx/sites-enabled/default
+  * user home dir (default vhost data dir) : **/srv/www/default**
+  * vhost configuration file : **/etc/nginx/sites-enabled/default**
 
 
 ## Multi users configuration
 
-A host_vars file have to be like this :
+An host_vars file have to be like this :
 ```
 multiusers: True
 users:
@@ -31,5 +31,5 @@ users:
       - <vhostname2>
 ```
 
-Ansible will create an user for each users. The home directory will be /srv/www/<username>.
-VHosts of this user will be stored in /srv/www/<username>/<vhostname>
+Ansible will create an user for each users. The home directory will be /srv/www/{username}.
+Vhosts datas of this user will be stored in /srv/www/{username}/{vhostname}
